@@ -10,7 +10,7 @@ import java.util.Calendar;
 /**
  * Created by kyle on 07/09/16.
  * <p/>
- * Gets alarms from ReminderDataHelper and sets alarms on reboot
+ * Gets alarms from content provider and sets them on reboot
  */
 
 public class AlarmSetter extends BroadcastReceiver {
@@ -18,8 +18,9 @@ public class AlarmSetter extends BroadcastReceiver {
   @Override
   // once phone reboot complete, set back all alarms
   public void onReceive(Context context, Intent intent) {
-    ReminderDataHelper database = new ReminderDataHelper(context);
-    Cursor cursor = database.getAllItems();
+    Cursor cursor = context.getContentResolver().query(ReminderContract.All.CONTENT_URI,
+            null, null, null, null);
+    cursor.moveToFirst();
     try {
       while (cursor.moveToNext()) {
 
